@@ -147,6 +147,44 @@ Use the package directory for repeatable tests and the browser page for human ch
 - manual: open `packages/lite/index.html`
 - provider trials: start with free OpenRouter-compatible models only after the mock-driven loop is stable
 
+## GitHub Pages And CI/CD
+
+This package is set up to support a small dedicated CI/CD path:
+
+- `.github/workflows/lite-ci.yml` runs `npm test` for `packages/lite`
+- `.github/workflows/lite-pages.yml` publishes `packages/lite` to GitHub Pages
+
+Expected Pages URL for this repository:
+
+- `https://jkershaw.github.io/opencode-lite-js/`
+
+Setup notes:
+
+1. In GitHub repository settings, set Pages to deploy from **GitHub Actions**
+2. Push the Lite work to `main` to trigger automatic deploys
+3. Use **Run workflow** on `lite-pages` when you want a manual deploy
+
+Security note:
+
+- the browser playground sends the OpenRouter API key from client-side JavaScript
+- use a restricted personal testing key only
+- do not treat the current browser-only deployment as a production-secret-safe architecture
+
+## Recommended Branch Setup
+
+Use the branches with separate roles:
+
+- `main`: product branch for the JavaScript fork and GitHub Pages deploys
+- `dev`: upstream-aligned reference branch kept for sync and comparison work
+
+Suggested next steps after this branch is merged or pushed where you want it:
+
+1. create `main` from the current Lite branch tip
+2. push `main` to GitHub
+3. change the repository default branch to `main`
+4. keep `dev` for upstream merges only
+5. branch future Lite work from `main`
+
 ## Immediate Next Steps
 
 1. add the package scaffold

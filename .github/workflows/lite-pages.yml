@@ -1,0 +1,44 @@
+name: lite-pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/lite-pages.yml"
+      - "packages/lite/**"
+  workflow_dispatch:
+
+concurrency:
+  group: lite-pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+
+      - name: Upload Lite Pages artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: packages/lite
+
+  deploy:
+    needs: build
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy GitHub Pages site
+        id: deployment
+        uses: actions/deploy-pages@854ad8347f1f11067e579b8f7251364a31d3d5c9 # v4.0.5
