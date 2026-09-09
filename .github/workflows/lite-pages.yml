@@ -5,7 +5,14 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/lite-pages.yml"
-      - "packages/lite/**"
+      - "agent.js"
+      - "index.html"
+      - "package.json"
+      - "providers.js"
+      - "README.md"
+      - "storage.js"
+      - "tools.js"
+      - "workspace.js"
   workflow_dispatch:
 
 concurrency:
@@ -27,10 +34,15 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
 
+      - name: Stage Lite site
+        run: |
+          mkdir site
+          cp index.html agent.js providers.js storage.js tools.js workspace.js site/
+
       - name: Upload Lite Pages artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
-          path: packages/lite
+          path: site
 
   deploy:
     needs: build

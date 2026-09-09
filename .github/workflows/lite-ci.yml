@@ -4,11 +4,27 @@ on:
   push:
     paths:
       - ".github/workflows/lite-ci.yml"
-      - "packages/lite/**"
+      - "agent.js"
+      - "index.html"
+      - "package.json"
+      - "providers.js"
+      - "README.md"
+      - "storage.js"
+      - "test/**"
+      - "tools.js"
+      - "workspace.js"
   pull_request:
     paths:
       - ".github/workflows/lite-ci.yml"
-      - "packages/lite/**"
+      - "agent.js"
+      - "index.html"
+      - "package.json"
+      - "providers.js"
+      - "README.md"
+      - "storage.js"
+      - "test/**"
+      - "tools.js"
+      - "workspace.js"
   workflow_dispatch:
 
 concurrency:
@@ -32,5 +48,4 @@ jobs:
           node-version: "24"
 
       - name: Run Lite tests
-        working-directory: packages/lite
         run: npm test
