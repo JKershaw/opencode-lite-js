@@ -1,4 +1,5 @@
-import { describe, expect, test } from "bun:test"
+import assert from "node:assert/strict"
+import { describe, test } from "node:test"
 import { defineTool, executeToolCall, getToolDefinitions } from "../tools.js"
 
 describe("tools", () => {
@@ -14,7 +15,7 @@ describe("tools", () => {
       }),
     ]
 
-    expect(getToolDefinitions(tools)).toEqual([
+    assert.deepEqual(getToolDefinitions(tools), [
       {
         name: "echo",
         description: "Echo a value",
@@ -34,8 +35,8 @@ describe("tools", () => {
       }),
     })
 
-    await expect(
-      executeToolCall({
+    assert.deepEqual(
+      await executeToolCall({
         call: {
           id: "tool-1",
           name: "echo",
@@ -45,8 +46,9 @@ describe("tools", () => {
         },
         tools: [tool],
       }),
-    ).resolves.toEqual({
-      value: "hello",
-    })
+      {
+        value: "hello",
+      },
+    )
   })
 })

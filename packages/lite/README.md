@@ -143,6 +143,7 @@ Initial test targets:
 Use the package directory for repeatable tests and the browser page for human checks.
 
 - automated: `bun test` from `packages/lite`
+- automated: `npm test` or `node --test` from `packages/lite`
 - manual: open `packages/lite/index.html`
 - provider trials: start with free OpenRouter-compatible models only after the mock-driven loop is stable
 

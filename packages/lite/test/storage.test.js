@@ -1,4 +1,5 @@
-import { describe, expect, test } from "bun:test"
+import assert from "node:assert/strict"
+import { describe, test } from "node:test"
 import { createMemoryStorage } from "../storage.js"
 
 describe("createMemoryStorage", () => {
@@ -14,7 +15,7 @@ describe("createMemoryStorage", () => {
     await storage.saveMessages("session-1", messages)
 
     const loaded = await storage.loadMessages("session-1")
-    expect(loaded).toEqual(messages)
-    expect(loaded).not.toBe(messages)
+    assert.deepEqual(loaded, messages)
+    assert.notEqual(loaded, messages)
   })
 })

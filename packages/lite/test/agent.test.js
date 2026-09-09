@@ -1,4 +1,5 @@
-import { describe, expect, test } from "bun:test"
+import assert from "node:assert/strict"
+import { describe, test } from "node:test"
 import { createAgent } from "../agent.js"
 import { createMemoryStorage } from "../storage.js"
 import { defineTool } from "../tools.js"
@@ -9,12 +10,12 @@ describe("createAgent", () => {
     const storage = createMemoryStorage()
     const provider = {
       complete: async ({ messages, tools }) => {
-        expect(messages).toHaveLength(1)
-        expect(messages[0]).toEqual({
+        assert.equal(messages.length, 1)
+        assert.deepEqual(messages[0], {
           role: "user",
           content: "hello",
         })
-        expect(tools).toEqual([])
+        assert.deepEqual(tools, [])
         return {
           text: "done",
           message: {
@@ -32,8 +33,8 @@ describe("createAgent", () => {
       storage,
     })
 
-    await expect(agent.run("hello")).resolves.toBe("done")
-    await expect(storage.loadMessages("default")).resolves.toEqual([
+    assert.equal(await agent.run("hello"), "done")
+    assert.deepEqual(await storage.loadMessages("default"), [
       {
         role: "user",
         content: "hello",
@@ -83,7 +84,7 @@ describe("createAgent", () => {
           }
         }
 
-        expect(messages.at(-1)).toEqual({
+        assert.deepEqual(messages.at(-1), {
           role: "tool",
           toolCallId: "tool-1",
           content: JSON.stringify({
@@ -126,9 +127,9 @@ describe("createAgent", () => {
       tools: [tool],
     })
 
-    await expect(agent.run("use a tool")).resolves.toBe("finished")
-    expect(calls).toHaveLength(2)
-    expect(calls[0].tools).toEqual([
+    assert.equal(await agent.run("use a tool"), "finished")
+    assert.equal(calls.length, 2)
+    assert.deepEqual(calls[0].tools, [
       {
         name: "echo",
         description: "Echo a value",
@@ -183,6 +184,6 @@ describe("createAgent", () => {
       },
     })
 
-    await expect(agent.run("write a file")).rejects.toThrow("Permission denied for tool \"write\"")
+    await assert.rejects(agent.run("write a file"), /Permission denied for tool "write"/)
   })
 })

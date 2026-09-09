@@ -1,4 +1,5 @@
-import { describe, expect, test } from "bun:test"
+import assert from "node:assert/strict"
+import { describe, test } from "node:test"
 import { createMemoryWorkspace } from "../workspace.js"
 
 describe("createMemoryWorkspace", () => {
@@ -7,13 +8,13 @@ describe("createMemoryWorkspace", () => {
       "src/app.js": "console.log('hello')",
     })
 
-    await expect(workspace.read("src/app.js")).resolves.toBe("console.log('hello')")
+    assert.equal(await workspace.read("src/app.js"), "console.log('hello')")
     await workspace.write("src/note.txt", "hello world")
     await workspace.edit("src/note.txt", "world", "team")
 
-    await expect(workspace.read("src/note.txt")).resolves.toBe("hello team")
-    await expect(workspace.list("src")).resolves.toEqual(["app.js", "note.txt"])
-    await expect(workspace.search("hello")).resolves.toEqual([
+    assert.equal(await workspace.read("src/note.txt"), "hello team")
+    assert.deepEqual(await workspace.list("src"), ["app.js", "note.txt"])
+    assert.deepEqual(await workspace.search("team"), [
       {
         path: "src/note.txt",
         matches: [1],
