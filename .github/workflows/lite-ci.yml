@@ -36,7 +36,7 @@ permissions:
 
 jobs:
   test:
-    name: packages/lite
+    name: root-lite
     runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: Checkout repository

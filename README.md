@@ -71,6 +71,7 @@ Setup:
 The browser playground sends the OpenRouter API key from client-side JavaScript.
 
 - use a restricted personal test key only
+- enter the key manually for each browser session because it is not stored
 - do not treat the current browser deployment as production-secret-safe
 
 ## Branch Strategy
